@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: traced-webapp-otel-config
+  labels:
+    app: traced-webapp
+data:
+  # ============================================
+  # SigNoz Configuration
+  # ============================================
+  # SIGNOZ_ENDPOINT: "http://signoz-otel-collector.signoz.svc.cluster.local:4317"
+  
+  # ============================================
+  # Instana Configuration  
+  # ============================================
+  # INSTANA_ENDPOINT: "http://instana-agent.instana-agent.svc.cluster.local:4317"
+  
+  # ============================================
+  # Generic OTLP Configuration
+  # ============================================
+  OTEL_ENDPOINT: "http://otel-collector.observability.svc.cluster.local:4317"
+  
+  # Common Settings
+  OTEL_SERVICE_NAME: "traced-webapp"
+  OTEL_EXPORTER_OTLP_PROTOCOL: "grpc"
+  OTEL_TRACES_SAMPLER: "parentbased_traceidratio"
+  OTEL_TRACES_SAMPLER_ARG: "1.0"

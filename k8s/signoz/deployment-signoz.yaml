@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traced-webapp
+  labels:
+    app: traced-webapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: traced-webapp
+  template:
+    metadata:
+      labels:
+        app: traced-webapp
+    spec:
+      containers:
+      - name: traced-webapp
+        image: traced-webapp:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: http
+        env:
+        # Service identification
+        - name: OTEL_SERVICE_NAME
+          value: "traced-webapp"
+        - name: OTEL_RESOURCE_ATTRIBUTES
+          value: "service.namespace=demo,deployment.environment=production"
+        
+        # SigNoz OTLP Endpoint
+        # Adjust the namespace if SigNoz is installed elsewhere
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+          value: "http://signoz-otel-collector.signoz.svc.cluster.local:4317"
+        
+        # Exporter configuration
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          value: "grpc"
+        - name: OTEL_TRACES_EXPORTER
+          value: "otlp"
+        - name: OTEL_METRICS_EXPORTER
+          value: "otlp"
+        - name: OTEL_LOGS_EXPORTER
+          value: "otlp"
+        
+        # Auto-instrumentation
+        - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+          value: "true"
+        
+        # Sample 100% of traces
+        - name: OTEL_TRACES_SAMPLER
+          value: "parentbased_traceidratio"
+        - name: OTEL_TRACES_SAMPLER_ARG
+          value: "1.0"
+        
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5

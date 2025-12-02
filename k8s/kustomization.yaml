@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+metadata:
+  name: traced-webapp
+
+namespace: default
+
+resources:
+  - deployment.yaml
+  - service.yaml
+  - configmap.yaml
+
+commonLabels:
+  app: traced-webapp
+  version: v1
+
+# Uncomment to use a different image
+# images:
+#   - name: traced-webapp
+#     newName: your-registry/traced-webapp
+#     newTag: v1.0.0

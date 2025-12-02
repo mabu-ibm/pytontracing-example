@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: traced-webapp
+  labels:
+    app: traced-webapp
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: http
+  selector:
+    app: traced-webapp
+---
+# Optional: NodePort service for easy testing
+apiVersion: v1
+kind: Service
+metadata:
+  name: traced-webapp-nodeport
+  labels:
+    app: traced-webapp
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+    targetPort: 8080
+    nodePort: 30080
+    protocol: TCP
+    name: http
+  selector:
+    app: traced-webapp

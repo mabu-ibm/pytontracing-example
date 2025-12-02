@@ -1,6 +1,6 @@
 # Traced Python Web Application
 
-A simple Flask web application with OpenTelemetry auto-instrumentation that works with **Instana**, **SigNoz**, and any OTLP-compatible backend.
+A simple Flask web application with OpenTelemetry nstrumantation and option to auto-instrumentation that works with **Instana**, **SigNoz**, and any OTLP-compatible backend.
 
 ## Features
 
@@ -51,7 +51,13 @@ docker run -p 8080:8080 \
   -e OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4317 \
   traced-webapp:latest
 ```
+Instana Autoinstrumentation :
+kubectl get mutatingwebhookconfigurations
 
+NAME                        WEBHOOKS   AGE
+instana-autotrace-webhook   1          29
+
+kubectl label namespace <DEIN_NAMESPACE_NAME> instana-autotrace="false"
 ## Kubernetes Deployment
 
 ### Option A: Deploy for SigNoz

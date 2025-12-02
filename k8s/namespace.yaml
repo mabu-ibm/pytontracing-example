@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    instana-autotrace: "false"
+    kubernetes.io/metadata.name: traced-webapp
+  name: traced-webapp

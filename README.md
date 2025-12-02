@@ -61,6 +61,7 @@ docker run -p 8080:8080 \
 # https://signoz.io/docs/install/kubernetes/
 
 # Deploy the app
+kubectl apply -f k8s/namespace.yaml # Instana Autotracing disabled 
 kubectl apply -f k8s/service.yaml
 kubectl apply -f k8s/signoz/deployment-signoz.yaml
 ```
@@ -72,6 +73,7 @@ kubectl apply -f k8s/signoz/deployment-signoz.yaml
 # https://www.ibm.com/docs/en/instana-observability/current?topic=agents-installing-host-agent-kubernetes
 
 # Deploy the app
+kubectl apply -f k8s/namespace.yaml # Instana Autotracing disabled
 kubectl apply -f k8s/service.yaml
 kubectl apply -f k8s/instana/deployment-instana.yaml
 ```
